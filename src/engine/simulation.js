@@ -94,11 +94,12 @@ export function runSimulation(params) {
     const il = impermanentLoss(priceRatio);
 
     // Daily utilization fluctuation (IID noise, mean-reverting around base)
-    const utilizationNoise = day === 0 ? 0 : normalRandom(rng) * volatility.utilizationFluctuation;
-    const effectiveUtilization = Math.max(0.01, Math.min(0.95, omniLendingUtilization + utilizationNoise));
+    // When lending is disabled (0%), no noise or floor — strictly zero
+    const utilizationNoise = (omniLendingUtilization === 0 || day === 0) ? 0 : normalRandom(rng) * volatility.utilizationFluctuation;
+    const effectiveUtilization = omniLendingUtilization === 0 ? 0 : Math.max(0, Math.min(0.95, omniLendingUtilization + utilizationNoise));
 
-    // Liquidation probability scales with utilization and volatility
-    const liquidationProb = effectiveUtilization * volatility.utilizationFluctuation * 3;
+    // Liquidation probability scales with utilization and volatility (zero when no borrows)
+    const liquidationProb = effectiveUtilization === 0 ? 0 : effectiveUtilization * volatility.utilizationFluctuation * 3;
 
     // Compounding LP fractions (grow as fees are reinvested)
     const omniLpFraction = omniEffectiveLp / poolTVL;
