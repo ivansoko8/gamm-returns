@@ -39,7 +39,7 @@ export default function Dashboard({ params, setParam, simulation }) {
           <div className="header-left">
             <OmniLogo size={36} />
             <div>
-              <h1 className="header-title">{params.tokenA}/{params.tokenB} Pool &mdash; OmniPair GAMM vs Raydium CPMM</h1>
+              <h1 className="header-title">{params.tokenA}/{params.tokenB} Pool &mdash; OmniPair GAMM vs Raydium CPMM LP Returns</h1>
               <p className="header-subtitle">Historical Data (Jan 2025 &ndash; Jan 2026) &middot; Starting at ${params.tokenAInitialPrice.toFixed(2)}</p>
             </div>
           </div>
