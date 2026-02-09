@@ -1,0 +1,616 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #09090B;
+  --bg-card: #121416;
+  --bg-sidebar: #0D0D0F;
+  --bg-hover: #1A1C1F;
+  --border: #363C3F;
+  --text: #FFFFFF;
+  --text-muted: #A1A1AA;
+  --text-dim: #71717A;
+  --omnipair: #2CA868;
+  --omnipair-dark: #228B52;
+  --omnipair-glow: rgba(44, 168, 104, 0.12);
+  --raydium: #E07555;
+  --raydium-dark: #C45E40;
+  --raydium-glow: rgba(224, 117, 85, 0.12);
+  --advantage: #5179FB;
+  --il: #EF5350;
+  --radius: 10px;
+  --radius-lg: 16px;
+}
+
+html {
+  font-size: 14px;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* ==================== DASHBOARD LAYOUT ==================== */
+
+.dashboard {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+}
+
+.main-content {
+  padding: 28px 36px;
+  overflow-x: hidden;
+  min-width: 0;
+}
+
+/* ==================== HEADER ==================== */
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.header-title {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.header-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 3px;
+  font-weight: 400;
+}
+
+.header-badges {
+  display: flex;
+  gap: 8px;
+}
+
+/* ==================== PROTOCOL BADGES ==================== */
+
+.protocol-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.badge-omni {
+  background: var(--omnipair-glow);
+  color: var(--omnipair);
+  border: 1.5px solid rgba(44, 168, 104, 0.25);
+}
+
+.badge-raydium {
+  background: var(--raydium-glow);
+  color: var(--raydium);
+  border: 1.5px solid rgba(224, 117, 85, 0.25);
+}
+
+/* ==================== SIDEBAR ==================== */
+
+.sidebar {
+  background: var(--bg-sidebar);
+  border-right: 1.5px solid var(--border);
+  padding: 24px 18px;
+  overflow-y: auto;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+}
+
+.sidebar-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1.5px solid var(--border);
+}
+
+.sidebar-section {
+  margin-bottom: 8px;
+}
+
+.section-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 9px 6px;
+  cursor: pointer;
+  border-radius: var(--radius);
+  transition: background 0.15s ease;
+}
+
+.section-toggle:hover {
+  background: var(--bg-hover);
+}
+
+.toggle-icon {
+  font-size: 0.6rem;
+  color: var(--text-dim);
+}
+
+.section-content {
+  padding: 8px 0 14px;
+  animation: fadeIn 0.2s ease;
+}
+
+/* ==================== SLIDERS ==================== */
+
+.slider-group {
+  margin-bottom: 16px;
+}
+
+.slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 7px;
+}
+
+.slider-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.slider-value {
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--omnipair);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.slider-input {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--omnipair);
+  cursor: pointer;
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 3px rgba(44, 168, 104, 0.2);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.slider-input::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 4px rgba(44, 168, 104, 0.3);
+}
+
+.slider-input::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--omnipair);
+  cursor: pointer;
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 3px rgba(44, 168, 104, 0.2);
+}
+
+.select-input {
+  width: 100%;
+  padding: 7px 10px;
+  background: var(--bg-card);
+  color: var(--text);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  font-family: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+  outline: none;
+  margin-top: 4px;
+  transition: border-color 0.15s ease;
+}
+
+.select-input:focus {
+  border-color: var(--omnipair);
+}
+
+.util-display {
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+}
+
+/* ==================== FEE TIER BUTTONS ==================== */
+
+.fee-tier-group {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.fee-tier-btn {
+  padding: 6px 2px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.fee-tier-btn:hover {
+  border-color: var(--raydium);
+  color: var(--raydium);
+}
+
+.fee-tier-btn.active {
+  background: var(--raydium-glow);
+  border-color: var(--raydium);
+  color: var(--raydium);
+  font-weight: 600;
+}
+
+/* ==================== STAT CARDS ==================== */
+
+.stat-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  position: relative;
+  overflow: hidden;
+  animation: fadeSlideUp 0.3s ease;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  background: var(--card-accent);
+  opacity: 0.7;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+.stat-subtitle {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  margin-top: 5px;
+}
+
+/* ==================== CHART TABS ==================== */
+
+.chart-section {
+  margin-bottom: 32px;
+}
+
+.chart-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1.5px solid var(--border);
+  margin-bottom: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.chart-tab {
+  padding: 11px 18px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.chart-tab:hover {
+  color: var(--text);
+}
+
+.chart-tab.active {
+  color: var(--omnipair);
+  border-bottom-color: var(--omnipair);
+}
+
+/* ==================== CHART PANEL ==================== */
+
+.chart-panel {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  padding: 24px;
+  min-height: 460px;
+}
+
+.chart-container {
+  animation: fadeIn 0.3s ease;
+}
+
+.chart-title {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+/* ==================== CHART TOOLTIP ==================== */
+
+.chart-tooltip {
+  background: rgba(9, 9, 11, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  min-width: 170px;
+}
+
+.tooltip-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.tooltip-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 0;
+  font-size: 0.72rem;
+}
+
+.tooltip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.tooltip-name {
+  color: var(--text-muted);
+  flex: 1;
+}
+
+.tooltip-value {
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  color: var(--text);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==================== SUMMARY TABLE ==================== */
+
+.summary-table-wrapper {
+  overflow-x: auto;
+}
+
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+
+.summary-table th {
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 2px solid var(--border);
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.summary-table td {
+  padding: 11px 16px;
+  border-bottom: 1px solid rgba(54, 60, 63, 0.5);
+  color: var(--text);
+}
+
+.summary-table .table-label {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.summary-table .table-omni {
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  color: var(--omnipair);
+  font-size: 0.76rem;
+}
+
+.summary-table .table-ray {
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  color: var(--raydium);
+  font-size: 0.76rem;
+}
+
+.highlight-row {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.highlight-row .table-label {
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ==================== FOOTER ==================== */
+
+.dashboard-footer {
+  padding: 24px 0;
+  border-top: 1.5px solid var(--border);
+  margin-top: 20px;
+}
+
+.dashboard-footer p {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+  max-width: 600px;
+}
+
+/* ==================== ANIMATIONS ==================== */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==================== RECHARTS OVERRIDES ==================== */
+
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: rgba(54, 60, 63, 0.5);
+}
+
+.recharts-legend-item-text {
+  color: var(--text-muted) !important;
+  font-size: 0.72rem !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 900px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    height: auto;
+    border-right: none;
+    border-bottom: 1.5px solid var(--border);
+    padding: 18px;
+  }
+
+  .main-content {
+    padding: 18px;
+  }
+
+  .stat-cards-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 13px;
+  }
+
+  .stat-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .stat-card {
+    padding: 14px;
+  }
+
+  .stat-value {
+    font-size: 1.2rem;
+  }
+
+  .chart-panel {
+    padding: 14px 10px;
+  }
+
+  .fee-tier-group {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
