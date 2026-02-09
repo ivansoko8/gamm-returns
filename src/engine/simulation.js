@@ -55,28 +55,35 @@ export function runSimulation(params) {
   } = params;
 
   const volatility = VOLATILITY_PRESETS[volatilityPreset] || VOLATILITY_PRESETS.medium;
+  const volMap = { low: 1, medium: 2, high: 3, extreme: 4 };
   const seed = Math.round(
-    daysToSimulate * 1000 +
-    swapUtilization * 50000 +
-    omniLendingUtilization * 10000
+    daysToSimulate * 100000 +
+    swapUtilization * 10000 +
+    omniLendingUtilization * 1000 +
+    (volMap[volatilityPreset] || 0) * 100
   );
   const rng = mulberry32(seed);
+
+  // Guard: bail out on invalid price data (C3)
+  if (!realPriceData || realPriceData.length < 2 || realPriceData[0] <= 0) {
+    return { data: [], summary: null };
+  }
 
   // Guard: don't exceed available price data
   const effectiveDays = Math.min(daysToSimulate, realPriceData.length - 1);
 
   // Pool TVL approximation (both protocols assumed same TVL = initialInvestment scaled)
-  const poolTVL = initialInvestment * 100; // LP is 1% of pool
+  const initialPoolTVL = initialInvestment * 100; // LP is 1% of pool
 
-  // Derive daily volume from swap utilization
-  const dailyVolume = poolTVL * swapUtilization;
+  // Volume is demand-driven, not mechanically tied to TVL — use stable baseline
+  const dailyVolume = initialPoolTVL * swapUtilization;
 
   // Daily withdrawal rate assumption (small % of TVL)
   const dailyWithdrawalRate = 0.005; // 0.5% of pool per day
 
-  // Compounding: effective LP positions grow as fees are reinvested
-  let omniEffectiveLp = initialInvestment;
-  let raydiumEffectiveLp = initialInvestment;
+  // LP pool ownership fractions — grow as fees are reinvested into current-sized pool
+  let omniLpFraction = initialInvestment / initialPoolTVL;
+  let raydiumLpFraction = initialInvestment / initialPoolTVL;
 
   const data = [];
   let cumulativeOmniSwap = 0;
@@ -98,12 +105,15 @@ export function runSimulation(params) {
     const utilizationNoise = (omniLendingUtilization === 0 || day === 0) ? 0 : normalRandom(rng) * volatility.utilizationFluctuation;
     const effectiveUtilization = omniLendingUtilization === 0 ? 0 : Math.max(0, Math.min(0.95, omniLendingUtilization + utilizationNoise));
 
-    // Liquidation probability scales with utilization and volatility (zero when no borrows)
-    const liquidationProb = effectiveUtilization === 0 ? 0 : effectiveUtilization * volatility.utilizationFluctuation * 3;
+    // Liquidation probability tied to actual price moves and utilization (L3 + M2)
+    const dailyPriceChange = day > 0
+      ? Math.abs(realPriceData[day] / realPriceData[day - 1] - 1)
+      : 0;
+    const liquidationProb = effectiveUtilization === 0 ? 0
+      : Math.min(1.0, dailyPriceChange * effectiveUtilization * 2);
 
-    // Compounding LP fractions (grow as fees are reinvested)
-    const omniLpFraction = omniEffectiveLp / poolTVL;
-    const raydiumLpFraction = raydiumEffectiveLp / poolTVL;
+    // Pool TVL scales with √r — reserve rebalancing in constant-product AMM (shared for both protocols)
+    const poolTVL = initialPoolTVL * Math.sqrt(priceRatio);
 
     // --- OmniPair daily income ---
     // Swap fees
@@ -139,10 +149,10 @@ export function runSimulation(params) {
     const omniDailyTotal = omniDailySwapIncome + omniDailyLendingIncome + omniDailyLiquidationIncome + omniDailyWithdrawalIncome;
     const raydiumDailyTotal = raydiumDailySwapIncome;
 
-    // Compound: reinvest daily fees into effective LP position
+    // Compound: reinvest fees into current-sized pool, growing LP ownership fraction
     if (day > 0) {
-      omniEffectiveLp += omniDailyTotal;
-      raydiumEffectiveLp += raydiumDailyTotal;
+      omniLpFraction += omniDailyTotal / poolTVL;
+      raydiumLpFraction += raydiumDailyTotal / poolTVL;
     }
 
     // Totals
