@@ -42,7 +42,7 @@ export function runSimulation(params) {
     daysToSimulate = 365,
     swapUtilization = 0.50,
     volatilityPreset = 'medium',
-    omniSwapFee = 0.003,
+    omniSwapFee = 0.0025,
     omniLpShare = 0.90,
     omniLendingUtilization = 0.30,
     omniBaseRate = 0.02,
