@@ -20,7 +20,7 @@ export default function StatCards({ summary }) {
       />
       <StatCard
         label="GAMM Advantage"
-        value={`+${summary.advantage.toFixed(2)}`}
+        value={`${summary.advantage >= 0 ? '+' : ''}${summary.advantage.toFixed(2)}`}
         suffix="%"
         color={COLORS.advantage}
         subtitle="Extra return from GAMM"

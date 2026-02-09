@@ -24,6 +24,6 @@ export const COLORS = {
   bgHover: '#1A1C1F',
   border: '#363C3F',
   text: '#FFFFFF',
-  textMuted: '#737373',
-  textDim: '#525252',
+  textMuted: '#A1A1AA',
+  textDim: '#71717A',
 };
