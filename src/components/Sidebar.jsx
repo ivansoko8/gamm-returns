@@ -67,9 +67,9 @@ export default function Sidebar({ params, setParam }) {
         <Slider
           label="Swap Fee"
           value={params.omniSwapFee}
-          min={0.001} max={0.05} step={0.001}
+          min={0.001} max={0.05} step={0.0005}
           onChange={(v) => setParam('omniSwapFee', v)}
-          format={(v) => `${(v * 100).toFixed(1)}%`}
+          format={(v) => `${(v * 100).toFixed(2)}%`}
         />
         <div className="slider-group">
           <label className="slider-label">Swap Fee LP Share</label>
