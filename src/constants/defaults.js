@@ -14,12 +14,13 @@ export const DEFAULTS = {
   omniSwapFee: 0.0025,      // 0.25% (matches Raydium default for comparison)
   omniLpShare: 0.90,         // 90% of swap fees to LPs
   omniLendingUtilization: 0.30,     // 30% lending utilization
-  omniBaseRate: 0.02,         // 2% base annual rate
+  omniBaseRate: 0.08,         // 8% base annual rate
   omniLendingLpShare: 0.85,  // 85% of interest to LPs
   omniLiquidationPenalty: 0.03, // 3% total
   omniLiquidatorCut: 0.005,  // 0.5% to liquidator
   omniLpLiqCut: 0.025,       // 2.5% to LPs
   omniWithdrawalFee: 0.01,   // 1% to remaining LPs
+  instantWithdrawalPct: 0.50, // 50% choose instant withdrawal (pay 1% fee)
   omniCollateralFactor: 0.85, // 85%
 
   // Raydium settings

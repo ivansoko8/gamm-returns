@@ -23,16 +23,21 @@ function impermanentLoss(priceRatio) {
   return (2 * Math.sqrt(priceRatio)) / (1 + priceRatio) - 1;
 }
 
-// Interest rate model: exponential with bands at 50%/85% utilization
+// Interest rate model: 3-zone model aligned with OmniPair contract (33%/66% thresholds)
 function annualBorrowRate(utilization, baseRate) {
-  if (utilization <= 0) return baseRate;
-  if (utilization <= 0.5) {
-    return baseRate + utilization * 0.1; // linear ramp to ~7%
-  } else if (utilization <= 0.85) {
-    return baseRate + 0.05 + (utilization - 0.5) * 0.4; // steeper ramp
+  if (utilization <= 0) return 0;
+  if (utilization < 0.33) {
+    // Decay zone: rate ramps from 0 to baseRate (mirrors contract's exponential decay)
+    return baseRate * (utilization / 0.33);
+  } else if (utilization <= 0.66) {
+    // Stable zone: gentle ramp from baseRate to 1.5× baseRate
+    const t = (utilization - 0.33) / 0.33;
+    return baseRate * (1 + t * 0.5);
   } else {
-    // exponential jump zone
-    return baseRate + 0.05 + 0.14 + Math.pow((utilization - 0.85) / 0.15, 2) * 2.0;
+    // Growth zone: exponential surge (mirrors contract's half-life doubling)
+    const rateAt66 = baseRate * 1.5;
+    const excess = (utilization - 0.66) / 0.34; // 0 → 1
+    return rateAt66 * Math.pow(2, excess * 2.5);
   }
 }
 
@@ -45,10 +50,11 @@ export function runSimulation(params) {
     omniSwapFee = 0.0025,
     omniLpShare = 0.90,
     omniLendingUtilization = 0.30,
-    omniBaseRate = 0.02,
+    omniBaseRate = 0.08,
     omniLendingLpShare = 0.85,
     omniLpLiqCut = 0.025,
     omniWithdrawalFee = 0.01,
+    instantWithdrawalPct = 0.50,
     raydiumFeeTier = 0.0025,
     raydiumLpShare = 0.84,
     realPriceData = [],
@@ -138,7 +144,7 @@ export function runSimulation(params) {
 
     // Withdrawal fees
     const dailyWithdrawals = poolTVL * dailyWithdrawalRate;
-    const omniDailyWithdrawalIncome = day === 0 ? 0 : dailyWithdrawals * omniWithdrawalFee * omniLpFraction;
+    const omniDailyWithdrawalIncome = day === 0 ? 0 : dailyWithdrawals * omniWithdrawalFee * instantWithdrawalPct * omniLpFraction;
     cumulativeOmniWithdrawal += omniDailyWithdrawalIncome;
 
     // --- Raydium daily income ---

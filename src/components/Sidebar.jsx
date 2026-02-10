@@ -85,7 +85,7 @@ export default function Sidebar({ params, setParam }) {
         <Slider
           label="Base Borrow Rate"
           value={params.omniBaseRate}
-          min={0.005} max={0.10} step={0.005}
+          min={0.005} max={0.30} step={0.005}
           onChange={(v) => setParam('omniBaseRate', v)}
           format={(v) => `${(v * 100).toFixed(1)}%`}
         />
@@ -93,6 +93,13 @@ export default function Sidebar({ params, setParam }) {
           <label className="slider-label">Lending Interest LP Share</label>
           <span className="util-display">85% to LPs</span>
         </div>
+        <Slider
+          label="Instant Withdrawal %"
+          value={params.instantWithdrawalPct}
+          min={0} max={1.0} step={0.05}
+          onChange={(v) => setParam('instantWithdrawalPct', v)}
+          format={(v) => `${(v * 100).toFixed(0)}%`}
+        />
         <div className="slider-group">
           <label className="slider-label">LP Revenue Sources</label>
           <span className="util-display" style={{ fontSize: '11px' }}>Swap + Lending + Liquidation + Withdrawal</span>
