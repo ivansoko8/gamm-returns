@@ -63,7 +63,7 @@ export default function Sidebar({ params, setParam }) {
         </div>
       </Section>
 
-      <Section title="OmniPair GAMM Settings">
+      <Section title="Omnipair GAMM Settings">
         <Slider
           label="Swap Fee"
           value={params.omniSwapFee}

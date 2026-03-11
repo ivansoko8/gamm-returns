@@ -9,6 +9,7 @@ import BreakdownChart from './charts/BreakdownChart.jsx';
 import ILChart from './charts/ILChart.jsx';
 import APRChart from './charts/APRChart.jsx';
 import SummaryTable from './charts/SummaryTable.jsx';
+import PositionValueChart from './charts/PositionValueChart.jsx';
 
 export default function Dashboard({ params, setParam, simulation }) {
   const [activeTab, setActiveTab] = useState('returns');
@@ -26,6 +27,8 @@ export default function Dashboard({ params, setParam, simulation }) {
         return <APRChart data={data} params={params} />;
       case 'summary':
         return <SummaryTable summary={summary} params={params} />;
+      case 'position':
+        return <PositionValueChart data={data} params={params} />;
       default:
         return <ReturnsChart data={data} />;
     }
@@ -39,7 +42,7 @@ export default function Dashboard({ params, setParam, simulation }) {
           <div className="header-left">
             <OmniLogo size={36} />
             <div>
-              <h1 className="header-title">{params.tokenA}/{params.tokenB} Pool &mdash; OmniPair GAMM vs Raydium CPMM LP Returns</h1>
+              <h1 className="header-title">{params.tokenA}/{params.tokenB} Pool &mdash; Omnipair GAMM vs Raydium CPMM LP Returns</h1>
               <p className="header-subtitle">Historical Data (Jan 2025 &ndash; Jan 2026) &middot; Starting at ${params.tokenAInitialPrice.toFixed(2)}</p>
             </div>
           </div>

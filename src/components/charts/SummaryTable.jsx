@@ -20,7 +20,7 @@ export default function SummaryTable({ summary, params }) {
           <thead>
             <tr>
               <th>Metric</th>
-              <th style={{ color: COLORS.omnipair }}>OmniPair GAMM</th>
+              <th style={{ color: COLORS.omnipair }}>Omnipair GAMM</th>
               <th style={{ color: COLORS.raydium }}>Raydium CPMM</th>
             </tr>
           </thead>

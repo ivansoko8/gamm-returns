@@ -35,7 +35,7 @@ export default function APRChart({ data, params }) {
             tickFormatter={(v) => `${v}%`}
           />
           <Tooltip content={<ChartTooltip formatter={(v) => `${v}%`} />} />
-          <Bar dataKey="omniAPR" name="OmniPair APR (all sources)" fill={COLORS.omnipair} radius={[4, 4, 0, 0]} />
+          <Bar dataKey="omniAPR" name="Omnipair APR (all sources)" fill={COLORS.omnipair} radius={[4, 4, 0, 0]} />
           <Bar dataKey="raydiumAPR" name="Raydium APR (swap only)" fill={COLORS.raydium} radius={[4, 4, 0, 0]} />
           <Legend wrapperStyle={{ color: COLORS.text, fontSize: 12, paddingTop: 8 }} />
         </BarChart>

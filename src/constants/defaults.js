@@ -10,7 +10,7 @@ export const DEFAULTS = {
   swapUtilization: 0.50,       // 50% volume/TVL ratio
   volatilityPreset: 'medium',
 
-  // OmniPair settings
+  // Omnipair settings
   omniSwapFee: 0.0025,      // 0.25% (matches Raydium default for comparison)
   omniLpShare: 0.90,         // 90% of swap fees to LPs
   omniLendingUtilization: 0.30,     // 30% lending utilization

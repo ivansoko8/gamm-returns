@@ -5,7 +5,7 @@ export default function StatCards({ summary }) {
   return (
     <div className="stat-cards-grid">
       <StatCard
-        label="OmniPair Return"
+        label="Omnipair Return"
         value={summary.omniReturn.toFixed(2)}
         suffix="%"
         color={COLORS.omnipair}
@@ -33,7 +33,7 @@ export default function StatCards({ summary }) {
         subtitle="IL from price divergence"
       />
       <StatCard
-        label="OmniPair APR"
+        label="Omnipair APR"
         value={summary.omniAPR.toFixed(1)}
         suffix="%"
         color={COLORS.omnipair}

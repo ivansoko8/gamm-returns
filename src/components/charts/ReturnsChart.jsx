@@ -28,7 +28,7 @@ export default function ReturnsChart({ data, params }) {
           <Line
             type="monotone"
             dataKey="omniReturn"
-            name="OmniPair GAMM Net Return"
+            name="Omnipair GAMM Net Return"
             stroke={COLORS.omnipair}
             strokeWidth={2}
             dot={false}

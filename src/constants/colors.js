@@ -1,9 +1,9 @@
 export const COLORS = {
-  // OmniPair brand
+  // Omnipair brand
   omnipair: '#2CA868',
   omnipairDark: '#228B52',
   omnipairGlow: 'rgba(44, 168, 104, 0.12)',
-  // Raydium — coral/orange from OmniPair brand palette
+  // Raydium — coral/orange from Omnipair brand palette
   raydium: '#E07555',
   raydiumDark: '#C45E40',
   raydiumGlow: 'rgba(224, 117, 85, 0.12)',

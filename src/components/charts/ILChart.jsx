@@ -31,7 +31,7 @@ export default function ILChart({ data, params }) {
             stroke={COLORS.il} fill="url(#gradIL)" strokeWidth={2}
           />
           <Line
-            type="monotone" dataKey="omniFeeReturn" name="OmniPair Fee Income"
+            type="monotone" dataKey="omniFeeReturn" name="Omnipair Fee Income"
             stroke={COLORS.omnipair} strokeWidth={2} dot={false}
           />
           <Line

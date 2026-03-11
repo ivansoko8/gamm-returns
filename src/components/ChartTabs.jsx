@@ -4,6 +4,7 @@ const TABS = [
   { id: 'il', label: 'IL Analysis' },
   { id: 'apr', label: 'APR Comparison' },
   { id: 'summary', label: 'Summary Table' },
+  { id: 'position', label: 'Portfolio Value' },
 ];
 
 export default function ChartTabs({ activeTab, onTabChange }) {

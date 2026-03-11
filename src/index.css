@@ -357,6 +357,10 @@ body {
 
 .chart-section {
   margin-bottom: 32px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--bg-card);
 }
 
 .chart-tabs {
@@ -395,9 +399,6 @@ body {
 
 .chart-panel {
   background: var(--bg-card);
-  border: 1.5px solid var(--border);
-  border-top: none;
-  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
   padding: 24px;
   min-height: 460px;
 }

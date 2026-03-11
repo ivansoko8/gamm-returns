@@ -23,7 +23,7 @@ function impermanentLoss(priceRatio) {
   return (2 * Math.sqrt(priceRatio)) / (1 + priceRatio) - 1;
 }
 
-// Interest rate model: 3-zone model aligned with OmniPair contract (33%/66% thresholds)
+// Interest rate model: 3-zone model aligned with Omnipair contract (33%/66% thresholds)
 function annualBorrowRate(utilization, baseRate) {
   if (utilization <= 0) return 0;
   if (utilization < 0.33) {
@@ -76,7 +76,10 @@ export function runSimulation(params) {
   }
 
   // Guard: don't exceed available price data
-  const effectiveDays = Math.min(daysToSimulate, realPriceData.length - 1);
+  const totalDays = realPriceData.length - 1;
+  const effectiveDays = Math.min(daysToSimulate, totalDays);
+  // Offset so reducing days removes the earliest data, keeping the most recent window
+  const startIndex = totalDays - effectiveDays;
 
   // Pool TVL approximation (both protocols assumed same TVL = initialInvestment scaled)
   const initialPoolTVL = initialInvestment * 100; // LP is 1% of pool
@@ -99,9 +102,9 @@ export function runSimulation(params) {
   let cumulativeRaydiumSwap = 0;
 
   for (let day = 0; day <= effectiveDays; day++) {
-    // Price from real data, normalized to ratio relative to day 0
-    const displayPrice = realPriceData[day];
-    const priceRatio = realPriceData[day] / realPriceData[0];
+    // Price from real data, normalized to ratio relative to the window start
+    const displayPrice = realPriceData[startIndex + day];
+    const priceRatio = realPriceData[startIndex + day] / realPriceData[startIndex];
 
     // IL
     const il = impermanentLoss(priceRatio);
@@ -113,7 +116,7 @@ export function runSimulation(params) {
 
     // Liquidation probability tied to actual price moves and utilization (L3 + M2)
     const dailyPriceChange = day > 0
-      ? Math.abs(realPriceData[day] / realPriceData[day - 1] - 1)
+      ? Math.abs(realPriceData[startIndex + day] / realPriceData[startIndex + day - 1] - 1)
       : 0;
     const liquidationProb = effectiveUtilization === 0 ? 0
       : Math.min(1.0, dailyPriceChange * effectiveUtilization * 2);
@@ -121,7 +124,7 @@ export function runSimulation(params) {
     // Pool TVL scales with √r — reserve rebalancing in constant-product AMM (shared for both protocols)
     const poolTVL = initialPoolTVL * Math.sqrt(priceRatio);
 
-    // --- OmniPair daily income ---
+    // --- Omnipair daily income ---
     // Swap fees
     const omniDailySwapIncome = day === 0 ? 0 : dailyVolume * omniSwapFee * omniLpShare * omniLpFraction;
     cumulativeOmniSwap += omniDailySwapIncome;
@@ -212,6 +215,8 @@ export function runSimulation(params) {
       // Returns %
       omniReturn: +omniReturn.toFixed(2),
       raydiumReturn: +raydiumReturn.toFixed(2),
+      // Hold value (50/50 hold of both assets)
+      holdValue: +holdValue.toFixed(2),
       // IL as % of initial investment
       ilImpact: +ilImpact.toFixed(4),
       // Fee-only returns %
@@ -240,7 +245,7 @@ export function runSimulation(params) {
     omniFeeReturn: final.omniFeeReturn,
     raydiumFeeReturn: final.raydiumFeeReturn,
     displayPrice: final.displayPrice,
-    initialPrice: realPriceData[0],
+    initialPrice: realPriceData[startIndex],
   };
 
   return { data, summary };
