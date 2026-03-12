@@ -12,7 +12,7 @@ import SummaryTable from './charts/SummaryTable.jsx';
 import PositionValueChart from './charts/PositionValueChart.jsx';
 
 export default function Dashboard({ params, setParam, simulation }) {
-  const [activeTab, setActiveTab] = useState('returns');
+  const [activeTab, setActiveTab] = useState('position');
   const { data, summary } = simulation;
 
   const renderChart = () => {
